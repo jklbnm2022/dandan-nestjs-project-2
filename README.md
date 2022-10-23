@@ -1,73 +1,31 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# readme
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## HTTP vs Socket
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+- HTTP 연결방식: 단방향. '단'이란, 클라이언트가 반드시 요청을 보내야 응답을 함.
+- 그리고 클라이언트와의 '연결'을 기억 못함.
 
-## Description
+- 주식 예시
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+  - 모든 클라이언트에게도 다 알려줘야 한다면? HTTP는 서버에서 다른 클라이언트에게 푸시 못함.왜냐하면 서버를 기억 못하니까. 일단은 그래서 클라이언트에게 계속 클라이언트가 서버에 요청을 보냄. A가 매도를 하면 그걸 다른 클라이언트도 알려야 함. 그거 하려면 계속 클라이언트가 서버에 연결 요청해서. (폴링 방식)
+  - 근데 그러기에 HTTP 는 너무 무겁고. 양방향은 아니다. 서버도 응답 게속해줘야해서 부하 걸리고.
 
-## Installation
+- 소켓
 
-```bash
-$ npm install
-```
+  - 소켓: 입구, 콘센트
+  - 넌 나 기억하고 있어야지.
 
-## Running the app
+- 클라이언트와 서버에 소켓이 붙어있음. 이 소켓은 콘센트 같은 것.
+- 연결을 하면 서버는 그거 받아서 비즈니스 로직 수행함. 연결은 이미 되어있으므로 다른 곳에는 그거에 맞게 쏴주기만 하면 됨.
+- event 발생 -> 로직에 따라 비즈니스 로직 시행.
 
-```bash
-# development
-$ npm run start
+`nest g ga chats`
 
-# watch mode
-$ npm run start:dev
+- ga: gateway
+  - gateway 를 통해 소켓 비즈니스 로직을 작성한다.
 
-# production mode
-$ npm run start:prod
-```
+## socket
 
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+- socket.emit(event, data)
+  - socket.on() : emit 으로 보내면 on 으로 받을 수 있다.
+- 소켓은 각각 아이디를 가진다. 아이디는 연결 끊기기 전까지 유지된다. 아이디는 연결될때마다 (기본적으로) 바뀐다.
