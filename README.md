@@ -29,3 +29,19 @@
 - socket.emit(event, data)
   - socket.on() : emit 으로 보내면 on 으로 받을 수 있다.
 - 소켓은 각각 아이디를 가진다. 아이디는 연결 끊기기 전까지 유지된다. 아이디는 연결될때마다 (기본적으로) 바뀐다.
+
+### lifecycle
+- lifecycle hooks 3가지
+  - OnGatewayInit: afterInit() 메소드 강제 구현. 서버 인스턴스를 인수로 사용.
+  - OnGatewayConnection: handleConnection() 메소드 강제 구현. 특정 클라이언트 소켓 인스턴스를 인수로 사용.
+  - OnGatewayDisconnect: handleDisconnect() 메소드 강제 구현. 특정 클라이언트 소켓 인스턴스를 인수로 사용.
+- implements 로 WebSocketGateway 에 붙여서 구현(?)
+
+## BroadCasting
+- 서버에서 클라이언트로 알려줌.
+
+## 이벤트 정의 및 설계
+- 새로운 유저 등록 및 이벤트 입력
+  - 다른 소켓 브로드캐스팅
+- 나갔을 때
+- 더 필요한 거: 채팅
